@@ -312,7 +312,7 @@ implements PortfolioManager, Initializable, Activatable
   private void createInitialTariffs ()
   {
     // remember that market prices are per mwh, but tariffs are by kwh
-    double marketPrice = marketManager.getMeanMarketPrice() / 1000.0;
+    double marketPrice = marketManager.getMeanMarketPrice(); // / 1000.0;
     // for each power type representing a customer population,
     // create a tariff that's better than what's available
     for (PowerType pt : customerProfiles.keySet()) {
@@ -327,7 +327,8 @@ implements PortfolioManager, Initializable, Activatable
         rateValue *= 0.7; // Magic number!! price break for interruptible
       TariffSpecification spec =
           new TariffSpecification(broker.getBroker(), pt)
-              .withPeriodicPayment(defaultPeriodicPayment);
+              //.withPeriodicPayment(defaultPeriodicPayment)
+              .withSignupPayment(-500.0);
       Rate rate = new Rate().withValue(rateValue/2.0).withFixed(false)
               .withMaxValue(rateValue*2.0).withExpectedMean(rateValue);
       if (pt.isInterruptible()) {
